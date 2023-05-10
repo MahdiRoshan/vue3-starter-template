@@ -33,40 +33,11 @@ export default {
 </script>
 
 <script setup>
-import {ref, computed, watch } from "vue";
+import { watch } from "vue";
+import useSelectData from './../composables/autoComplete.composable'
 
-    /** Variables */
     const props = defineProps(['label' , 'data' , 'placeholder' , 'id']);
-    const searchQuery = ref('');
-    const selectedItems = ref([]);
-
-    /** Functions */
-    const filteredOptions = computed(() => {
-        return props.data.filter(option =>
-            option.name.toLowerCase().includes(searchQuery.value.toLowerCase())
-        );
-    });
-
-    const selectOption = option => {
-        if (!selectedItems.value.includes(option)) {
-            selectedItems.value.push(option);
-        }
-        searchQuery.value = '';
-    };
-
-    const addOption = (text) =>{
-        if (!selectedItems.value.includes(text)) {
-            selectedItems.value.push({id:Math.floor(Math.random() * 9999) + 1 , name:text});
-        }
-        searchQuery.value = '';
-    }
-
-    const removeItem = item => {
-        const index = selectedItems.value.indexOf(item);
-        if (index !== -1) {
-            selectedItems.value.splice(index, 1);
-        }
-    };
+    const { searchQuery ,selectedItems , filteredOptions , selectOption , addOption, removeItem} = useSelectData(props.data);
 
     watch(selectedItems, () => {
         searchQuery.value = '';
