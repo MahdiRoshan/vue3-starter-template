@@ -13,7 +13,5 @@
 
     <main>
         <h1>{{ $t('Login') }}</h1>
-        <AutoCompleteInput label="search name" placeholder="search in names ..." id="search name" :data="names"/>
-        <DatePicker />
     </main>
 </template>
