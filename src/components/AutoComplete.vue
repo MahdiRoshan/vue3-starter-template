@@ -9,7 +9,7 @@
                 <nav v-if="searchQuery && filteredOptions.length" class="fd-menu">
                     <ul class="fd-menu__list">
                         <li v-for="option in filteredOptions" @click="selectOption(option)" class="fd-list__item">
-                           {{option.name}}
+                           {{option[props.bindValue]}}
                         </li>
                     </ul>
                 </nav>
@@ -19,7 +19,7 @@
             <label>Selected Items:</label>
             <ul>
                 <li v-for="item in selectedItems">
-                    {{ item.name }} <button @click="removeItem(item)">x</button>
+                    {{ item[props.bindValue] }} <button @click="removeItem(item)">x</button>
                 </li>
             </ul>
         </div>
@@ -36,8 +36,16 @@ export default {
 import { watch } from "vue";
 import useSelectData from './../composables/autoComplete.composable'
 
-    const props = defineProps(['label' , 'data' , 'placeholder' , 'id']);
-    const { searchQuery ,selectedItems , filteredOptions , selectOption , addOption, removeItem} = useSelectData(props.data);
+    const props = defineProps(['modelValue' , 'bindValue' , 'label' , 'data' , 'placeholder' , 'id']);
+
+    const {
+        searchQuery ,
+        selectedItems,
+        filteredOptions,
+        selectOption,
+        addOption,
+        removeItem
+    } = useSelectData(props.data, props.bindValue , props.modelValue);
 
     watch(selectedItems, () => {
         searchQuery.value = '';
